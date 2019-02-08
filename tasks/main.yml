@@ -1,0 +1,9 @@
+---
+# tasks file for kubectl-cli
+
+- import_tasks: ubuntu.yml
+  become: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int >= 16
+
+- import_tasks: bash-completion.yml
+  become: yes

@@ -1,0 +1,2 @@
+- name: add kubectl bash completion for all users
+  shell: "kubectl completion bash > /etc/bash_completion.d/kubectl"

@@ -1,0 +1,10 @@
+---
+
+# Use it as: ansible-playbook -i localhost -b playbook-example.yml
+
+- name: install kubectl
+  hosts: localhost
+  roles:
+    - kubectl-cli
+
+

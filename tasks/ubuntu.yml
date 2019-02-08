@@ -1,0 +1,29 @@
+---
+# tasks file for kubectl-cli on ubuntu linux
+
+- name: ensure snap command is installed
+  become: yes
+  apt:
+    state: present
+    name: snapd
+
+- name: check kubcetl installation via snap
+  shell: "snap list kubectl || true"
+  register: result
+  changed_when: false
+
+- name: remove kubectl from snap
+  command: "snap remove kubectl"
+  when: ( result.stdout | search("kubectl") )
+
+- name: get kubectl from upstream
+  get_url:
+    url: "https://storage.googleapis.com/kubernetes-release/release/{{ kubectl_cli_version }}/bin/linux/amd64/kubectl"
+    dest: "/usr/local/bin/kubectl-{{ kubectl_cli_version }}"
+    mode: 0755
+
+- name: link to /usr/bin/kubectl
+  file:
+    src: "/usr/local/bin/kubectl-{{ kubectl_cli_version }}"
+    dest: /usr/bin/kubectl
+    state: link
